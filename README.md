@@ -63,7 +63,7 @@ Destructuring the long answer:
     const hasZero = arr.indexOf(0) > -1; // hasZero is false
     ```
 
-    How does this happen? The prototype is the Array prototype object, the array inherits methods from totype as it is built from the prototype itself. Take for example a car, it has a prototype, the prototype is the car itself, the car inherits methods from the prototype as it is built from the prototype itself.
+    How does this happen? The prototype is the Array prototype object, the array inherits methods from to type as it is built from the prototype itself. Take for example a car, it has a prototype, the prototype is the car itself, and the car inherits methods from the prototype as it is built from the prototype itself.
 
 - **First-class functions:** JavaScript supports first-class functions. This means that functions in JavaScript are treated like any other variable. Functions can be passed as arguments to other functions, returned by other functions, and assigned to variables.
 - **Dynamic**: JavaScript is a dynamic language. This means that the data types are not set when the code is written. Instead, the data types are set when the code is executed. This is also called type coercion. For example:
@@ -111,27 +111,27 @@ There are several JavaScript engines in use today, including the V8 engine devel
 
 ### CALL STACK
 
-Where our code is actually executed using execution context. See [execution context](#execution-context-and-the-call-stack) and [call stack](#call-stack-1) for more info.
+Where our code is executed using execution context. See [execution context](#execution-context-and-the-call-stack) and [call stack](#call-stack-1) for more info.
 
 ### HEAP
 
 In JavaScript, the heap is a region of memory that is used to store objects and data structures. It is separate from the call stack, which is used to store the current execution state of the program.
 
-The heap is used to store objects that are created dynamically at runtime, such as objects that are created using the `new` operator or objects that are created using literal syntax (e.g. `{}` or `[]`). The heap is also used to store data structures that are created using the `new` operator, such as arrays or maps.
+The heap is used to store objects that are created dynamically at runtime, such as objects that are created using the `new` operator or objects that are created using the literal syntax (e.g. `{}` or `[]`). The heap is also used to store data structures that are created using the `new` operator, such as arrays or maps.
 
 The heap is managed by the JavaScript engine, and objects in the heap are subject to garbage collection when they are no longer being used. Garbage collection is the process by which the JavaScript engine identifies and removes objects from the heap that are no longer being used by the program. This helps to free up memory and improve the performance of the program.
 
-The heap is an important aspect of the way JavaScript works, and is used by many other programming languages as well. It is separate from the stack, which is used to store the current execution state of the program, and is managed by the JavaScript engine to ensure that objects and data structures are efficiently used and managed in memory.
+The heap is an important aspect of the way JavaScript works, and is used by many other programming languages as well. It is separate from the stack, which is used to store the current execution state of the program and is managed by the JavaScript engine to ensure that objects and data structures are efficiently used and managed in memory.
 
 ### COMPILATION VS. INTERPRETATION LANGUAGES
 
 **Compilation:** Entire code is converted into machine code at once, and written to a binary file that can be executed by a computer.
 ![Compilation Process](https://i.imgur.com/k4tbNsN.png)
 
-**Interpretation:** Interpreter runs through the source code and executes it line by line.
+**Interpretation:** The interpreter runs through the source code and executes it line by line.
 ![Interpretation Process](https://i.imgur.com/n2iyTwm.png)
 
-Compilation is way faster than interpretation.
+The compilation process is way faster than the interpretation one.
 
 Javascript uses **JIT** (Just-in-time) compilation (mix between Compilation & Interpretation)
 ![Just in Time Process](https://i.imgur.com/FHhwpuc.png)
@@ -140,9 +140,9 @@ Javascript uses **JIT** (Just-in-time) compilation (mix between Compilation & In
 
 ![The processes behind JIT in Javascript](https://i.imgur.com/z7CTSTL.png)
 
-The code first is parsed into AST (abstract syntax tree) - it splits up each line of code into pieces that are meaningful to the language - like const/function keywords, and saves all of those pieces into the tree in a structured way, while checking for syntax errors at the same time.
+The code first is parsed into AST (abstract syntax tree) - it splits up each line of code into pieces that are meaningful to the language - like const/function keywords, and saves all of those pieces into the tree in a structured way while checking for syntax errors at the same time.
 
-Then comes compilation, it takes the generated AST and compiles it into machine code, then the machine code gets executed right away. It doesn't stop at that moment, javascript will execute a very unoptimized machine code at first, but during execution, the machine code is optimized and recompiled during the execution.
+Then comes compilation, which takes the generated AST and compiles it into machine code, then the machine code gets executed right away. It doesn't stop at that moment, javascript will execute a very unoptimized machine code at first, but during execution, the machine code is optimized and recompiled during the execution.
 
 ### WEB APIs
 
@@ -158,7 +158,7 @@ What are they? They are not part of the JS language, they are part of the browse
 
 ![Callback Queue](https://i.imgur.com/FVJmbgD.png)
 
-Callback functions, for e.x when an event is called (e.x an onClick), the callback function is put into the callback queue. Then, when the stack is empty, the callback function is passed to the stack so that it can be executed. And this happens due to event loop, it takes callback functions from the callback queue and puts them into the call stack so they can be executed.
+Callback functions, for e.x, when an event is called (e.x an onClick), the callback function is put into the callback queue. Then, when the stack is empty, the callback function is passed to the stack so that it can be executed. And this happens due to the event loop, it takes callback functions from the callback queue and puts them into the call stack so they can be executed.
 
 ---
 
@@ -166,7 +166,7 @@ Callback functions, for e.x when an event is called (e.x an onClick), the callba
 
 ### What is an execution context?
 
-After compilation, a so-called global execution context is created for the top level code (code that is not inside any function), after that is finished, the execution of top-level code inside global EC happens, and only then the execution of functions happens while waiting for callbacks. (e.x: click event callback)
+After compilation, a so-called global execution context is created for the top-level code (code that is not inside any function), after that is finished, the execution of top-level code inside global EC happens, and only then does the execution of functions happens while waiting for callbacks. (e.x: click event callback)
 
 Exactly one global execution context (EC) happens, that is for top-level code. But, an execution context is created per each function. (for each function call, a new execution context is created)
 
@@ -179,8 +179,8 @@ Exactly one global execution context (EC) happens, that is for top-level code. B
   - functions,
   - arguments object (not in arrow functions)),
 - The scope chain,
-- The this keyword (not in arrow functions)
-  All of this is genereated during "creation phase", right before execution.
+- `this` keyword (not in arrow functions)
+  All of this is generated during the "creation phase", right before execution.
 
 Arrow functions don't have the arguments object & this keyword, they can instead use them from their closest regular function parent.
 
@@ -217,7 +217,7 @@ How will the engine keep track of the order of execution of functions? It will u
 
 LIFO (Last In First Out) data structure, where the last function that gets pushed into the stack is the first one to be popped out of the stack when the execution is finished.
 
-It is as if you bought pizzas together with your friends, and you put them on a table in order to keep track of who bought which pizza. The last pizza you bought is the first one you eat, and the first pizza you bought is the last one you eat.
+It is as if you bought pizzas together with your friends, and you put them on a table to keep track of who bought which pizza. The last pizza you bought is the first one you eat, and the first pizza you bought is the last one you eat.
 
 For example in the code above, the call stack will look like this:
 
@@ -241,7 +241,7 @@ This is called synchronous execution, and it is the default behavior of javascri
 
 ### Scope Concepts
 
-Scope is the visibility of variables. (where can we access a certain variable?) How our program's variables are organized and accessed. "Where can we access a certain variable?", "Where do we have access to a certain variable?" or "Where was a certain variable defined in the code?"
+The scope is the visibility of variables. (where can we access a certain variable?) How our program's variables are organized and accessed. "Where can we access a certain variable?", "Where do we have access to a certain variable?" or "Where was a certain variable defined in the code?"
 
 - **Lexical scope:** A function that is lexically within another function gets access to the scope of the outer function. (e.x: a function defined inside another function has access to the variables of the outer function)
 
@@ -276,7 +276,7 @@ console.log(age); // ReferenceError: age is not defined
 ```
 
 - Variables defined inside a function are not accessible from outside the function.
-- Also called local scope, because the variables are only accessible inside the function.
+- Also called a local scope, because the variables are only accessible inside the function.
 
 ### Block Scope (ES6)
 
@@ -330,11 +330,11 @@ At first sight, the scopes might look like this:
 | ----------------- | ------------- | -------------- |
 | name: ItsYeWolfie | age: 21       | job: Fellow    |
 
-The secret is that every scope has access to the variables of all its parent scopes. This is called the scope chain. That means that the second() function has access to the variables of the first() function, and the first() function has access to the variables of the global scope. How does this work? The second `scope()` will look for the variable it needs in its own scope, and if it doesn't find it there, it will look in the scope of its parent, and so on, until it finds the variable it needs, or it reaches the global scope, and if it doesn't find the variable there, it will throw a `ReferenceError`.
+The secret is that every scope has access to the variables of all its parent scopes. This is called the scope chain. That means that the second() function has access to the variables of the first() function, and the first() function has access to the variables of the global scope. How does this work? The second `scope()` will look for the variable it needs in its scope, and if it doesn't find it there, it will look in the scope of its parent, and so on, until it finds the variable it needs, or it reaches the global scope, and if it doesn't find the variable there, it will throw a `ReferenceError`.
 
 This is called the **variable lookup**, and it is how the javascript engine finds the value of a variable, this only works **upwards**, it will **_never look downwards_**, so the `second()` function will never have access to the variables of a `third()` function.
 
-The `millenial` variable is accessible from the `second()` function, because it is defined by the `var` keyword (which is exempt from the block scope), and the `decade` variable is not accessible from the `second()` function, because it is defined by the `const` keyword (which is not exempt from the block scope) - **var** is function scoped, **let** and **const** are block scoped.
+The `millennial` variable is accessible from the `second()` function, because it is defined by the `var` keyword (which is exempt from the block scope), and the `decade` variable is not accessible from the `second()` function, because it is defined by the `const` keyword (which is not exempt from the block scope) - **var** is function scoped, **let** and **const** are block scoped.
 
 The final scope chain will look like this:
 
@@ -345,7 +345,7 @@ The final scope chain will look like this:
 |                   | name: ItsYeWolfie | name: ItsYeWolfie | name: ItsYeWolfie |
 |                   |                   |                   | job: Fellow       |
 
-Due to lexical scope, the `if else` cannot access the `job` variable, because it is defined in the `second()` function, which is not a parent of the `if else` block, they are merely siblings.
+Due to lexical scope, the `if-else` cannot access the `job` variable, because it is defined in the `second()` function, which is not a parent of the `if-else` block, they are merely siblings.
 
 ### Scope chain vs. Call stack
 
@@ -402,10 +402,10 @@ That shows that the code above will throw a `ReferenceError`, as `b` and `c` are
 
 ### Summary
 
-- Scope determines the accessibility (visibility) of variables. It asks the question "where can we access a certain variable?", "where do variables live?".
+- Scope determines the accessibility (visibility) of variables. It asks the question "Where can we access a certain variable?", "Where do variables live?".
 - There are 3 types of scope: global scope, function scope and block scope.
 - Variables defined in the global scope are accessible from anywhere in the code.
-- Only `let` and `const` are block-scoped, `var` is function-scoped.
+- Only `let` and `const` are block-scoped, and `var` is function-scoped.
 - In JavaScript, we have lexical scope, which means that scope is defined by the placement of functions and blocks in the code, not by where the functions and blocks are called.
 - Every scope always has access to the variables of its parent scope, but not the other way around.
 - When a variable is not in the current scope, the scope chain is used to look for the variable in the parent scope, and so on, until the variable is found, or the global scope is reached, and if the variable is not found in the global scope, a `ReferenceError` is thrown.
@@ -421,7 +421,7 @@ Check [this](scoping.js) for practice.
 
 **Hoisting** is a JavaScript mechanism where variables and function declarations are moved to the top of their scope before code execution. Inevitably, this means that no matter where functions and variables are declared, they are moved to the top of their scope regardless of whether their scope is global or local.
 
-**Before execution,** code is scanned for variable declarations and for each variable, a new property is created in the Variable Environment Object. **After that, the code is scanned for function declarations, and for each function, a new property is created in the Variable Environment Object.**
+**Before execution,** the code is scanned for variable declarations and for each variable, a new property is created in the Variable Environment Object. **After that, the code is scanned for function declarations, and for each function, a new property is created in the Variable Environment Object.**
 
 |                                 | Hoisted? | Initial value               | Scope                  |
 | ------------------------------- | -------- | --------------------------- | ---------------------- |
@@ -446,7 +446,7 @@ if (myName === 'ItsYeWolfie') {
 
 The code above will throw a `ReferenceError` because the `job` variable is in the temporal dead zone, and the `x` variable is not defined.
 
-- Because it is a safer way to declare variables, because it prevents us from using variables before they are declared. It makes it easier to avoid and catch errors. Accessing a variable before it is declared is a common mistake, and it is a common source of bugs, and should be avoided.
+- Because it is a safer way to declare variables because it prevents us from using variables before they are declared. It makes it easier to avoid and catch errors. Accessing a variable before it is declared is a common mistake, and it is a common source of bugs and should be avoided.
 - Makes const variables more useful, because they are now immutable, and we can't accidentally change them.
 
 #### Hoisting
@@ -454,20 +454,20 @@ The code above will throw a `ReferenceError` because the `job` variable is in th
 **If hoisting brings a lot of problems, why is it still a thing?**
 
 - _It is a feature of JavaScript, and it is not going to be removed._
-- Using functions before actual declaration.
+- Using functions before the actual declaration.
 - var hoisting is just a side effect of how the JavaScript engine works, and it is not a good practice to use it.
 
 Visit [this](hoisting.js) for practice and further reading & understanding.
 
 ## THE THIS KEYWORD
 
-The `this` keyword is a special variable that is created for every execution context (every function). It is not assigned a value until a function where it is defined is actually called. It takes the value of (points to) the "owner" of the function in which the `this` keyword is used.
+`this` keyword is a special variable that is created for every execution context (every function). It is not assigned a value until a function where it is defined is called. It takes the value of (points to) the "owner" of the function in which `this` keyword is used.
 
-**The `this` keyword is not static. It depends on how the function is called, and its value is only assigned when the function is actually called.**
+**`this` keyword is not static. It depends on how the function is called, and its value is only assigned when the function is called.**
 
-If we set for example `x = 5`, and then we call `console.log(this.x)`, the `this` keyword will point to the **global object**, which is the `window` object in the browser, and the `global` object in Node.js.
+If we set for example `x = 5`, and then we call `console.log(this.x)`, `this` keyword will point to the **global object**, which is the `window` object in the browser, and the `global` object in Node.js.
 
-Let's analyze four different ways of calling a function, and see how the `this` keyword behaves in each case.
+Let's analyze four different ways of calling a function, and see how `this` keyword behaves in each case.
 
 ### Method call
 
@@ -484,7 +484,7 @@ const myObj = {
 myObj.calcAge(); // this = myObj
 ```
 
-In the code above, the `this` keyword points to the object that is calling the method, in this case, the `myObj` object, and `this.birthYear` is equal to `myObj.birthYear`, which is `2001`.
+In the code above, `this` keyword points to the object that is calling the method, in this case, the `myObj` object, and `this.birthYear` is equal to `myObj.birthYear`, which is `2001`.
 
 ### Regular function call
 
@@ -502,7 +502,7 @@ const calcAge = function () {
 calcAge(); // this = undefined
 ```
 
-In the code above, the `this` keyword undefined, because the `calcAge()` function is a regular function call, and not a method call. (This applies only for strict mode, in non-strict mode, the `this` keyword will point to the global object, which is the `window` object in the browser, and the `global` object in Node.js.)
+In the code above, `this` keyword is undefined, because the `calcAge()` function is a regular function call and not a method call. (This applies only for strict mode, in non-strict mode, `this` keyword will point to the global object, which is the `window` object in the browser, and the `global` object in Node.js.)
 
 ### Arrow function call
 
@@ -526,7 +526,7 @@ const myObj = {
 myObj.calcAge(); // this = myObj
 ```
 
-In the code above, the `this` keyword points to the object that is calling the method, in this case, the `myObj` object, and `this.birthYear` is equal to `myObj.birthYear`, which is `2001`. Arrow functions do not get their own `this` keyword, they simply use the `this` keyword of the function they are written in.
+In the code above, `this` keyword points to the object that is calling the method, in this case, the `myObj` object, and `this.birthYear` is equal to `myObj.birthYear`, which is `2001`. Arrow functions do not get their own `this` keyword, they simply use `this` keyword of the function they are written in.
 
 ### Event listener
 
@@ -544,7 +544,7 @@ const calcAge = function () {
 document.querySelector('.btn').addEventListener('click', calcAge); // this = undefined
 ```
 
-In the code above, the `this` keyword is undefined, because the `calcAge()` function is a regular function call, and not a method call. (The strict mode applies just the same, in non-strict mode, the `this` keyword will point to the global object, which is the `window` object in the browser, and the `global` object in Node.js.)
+In the code above, `this` keyword is undefined, because the `calcAge()` function is a regular function call and not a method call. (The strict mode applies just the same, in non-strict mode, `this` keyword will point to the global object, which is the `window` object in the browser, and the `global` object in Node.js.)
 
 There are other ways to fix this, but the most common ways are:
 
