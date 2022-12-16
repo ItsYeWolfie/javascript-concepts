@@ -27,6 +27,11 @@
   - [Hoisting in JavaScript](#hoisting-in-javascript)
     - [Temporal Dead Zone, Let and Const](#temporal-dead-zone-let-and-const)
       - [Hoisting](#hoisting)
+  - [THE THIS KEYWORD](#the-this-keyword)
+    - [Method call](#method-call)
+    - [Regular function call](#regular-function-call)
+    - [Arrow function call](#arrow-function-call)
+    - [Event listener](#event-listener)
 
 ---
 
@@ -441,8 +446,6 @@ if (myName === 'ItsYeWolfie') {
 
 The code above will throw a `ReferenceError` because the `job` variable is in the temporal dead zone, and the `x` variable is not defined.
 
-**Why was TDZ introduced?**
-
 - Because it is a safer way to declare variables, because it prevents us from using variables before they are declared. It makes it easier to avoid and catch errors. Accessing a variable before it is declared is a common mistake, and it is a common source of bugs, and should be avoided.
 - Makes const variables more useful, because they are now immutable, and we can't accidentally change them.
 
@@ -455,3 +458,102 @@ The code above will throw a `ReferenceError` because the `job` variable is in th
 - var hoisting is just a side effect of how the JavaScript engine works, and it is not a good practice to use it.
 
 Visit [this](hoisting.js) for practice and further reading & understanding.
+
+## THE THIS KEYWORD
+
+The `this` keyword is a special variable that is created for every execution context (every function). It is not assigned a value until a function where it is defined is actually called. It takes the value of (points to) the "owner" of the function in which the `this` keyword is used.
+
+**The `this` keyword is not static. It depends on how the function is called, and its value is only assigned when the function is actually called.**
+
+If we set for example `x = 5`, and then we call `console.log(this.x)`, the `this` keyword will point to the **global object**, which is the `window` object in the browser, and the `global` object in Node.js.
+
+Let's analyze four different ways of calling a function, and see how the `this` keyword behaves in each case.
+
+### Method call
+
+```javascript
+const myObj = {
+  name: 'ItsYeWolfie',
+  birthYear: 2001,
+  calcAge: function () {
+    console.log(this);
+    console.log(2022 - this.birthYear);
+  },
+};
+
+myObj.calcAge(); // this = myObj
+```
+
+In the code above, the `this` keyword points to the object that is calling the method, in this case, the `myObj` object, and `this.birthYear` is equal to `myObj.birthYear`, which is `2001`.
+
+### Regular function call
+
+```javascript
+const myObj = {
+  name: 'ItsYeWolfie',
+  birthYear: 2001,
+};
+
+const calcAge = function () {
+  console.log(this);
+  console.log(2022 - this.birthYear);
+};
+
+calcAge(); // this = undefined
+```
+
+In the code above, the `this` keyword undefined, because the `calcAge()` function is a regular function call, and not a method call. (This applies only for strict mode, in non-strict mode, the `this` keyword will point to the global object, which is the `window` object in the browser, and the `global` object in Node.js.)
+
+### Arrow function call
+
+```javascript
+const myObj = {
+  name: 'ItsYeWolfie',
+  birthYear: 2001,
+  calcAge: function () {
+    console.log(this);
+    console.log(2022 - this.birthYear);
+
+    const isMillenial = () => {
+      console.log(this);
+      console.log(this.birthYear >= 1981 && this.birthYear <= 1996);
+    };
+
+    isMillenial();
+  },
+};
+
+myObj.calcAge(); // this = myObj
+```
+
+In the code above, the `this` keyword points to the object that is calling the method, in this case, the `myObj` object, and `this.birthYear` is equal to `myObj.birthYear`, which is `2001`. Arrow functions do not get their own `this` keyword, they simply use the `this` keyword of the function they are written in.
+
+### Event listener
+
+```javascript
+const myObj = {
+  name: 'ItsYeWolfie',
+  birthYear: 2001,
+};
+
+const calcAge = function () {
+  console.log(this);
+  console.log(2022 - this.birthYear);
+};
+
+document.querySelector('.btn').addEventListener('click', calcAge); // this = undefined
+```
+
+In the code above, the `this` keyword is undefined, because the `calcAge()` function is a regular function call, and not a method call. (The strict mode applies just the same, in non-strict mode, the `this` keyword will point to the global object, which is the `window` object in the browser, and the `global` object in Node.js.)
+
+There are other ways to fix this, but the most common ways are:
+
+- Using the `new` keyword.
+- Using the `call()` method.
+- Using the `apply()` method.
+- Using the `bind()` method.
+
+<!-- TODO: LINK new, call(), apply() and bind() -->
+They will be explained way down below.
+
+See [this](this.js) for practice and further reading & understanding.
