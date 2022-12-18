@@ -35,7 +35,7 @@
   - [Primitives vs. Objects (Primitive vs. Reference Types)](#primitives-vs-objects-primitive-vs-reference-types)
     - [Primitives Summary](#primitives-summary)
     - [Objects Summary](#objects-summary)
-    - [Objects](#objects)
+    - [Examples of Data Types](#examples-of-data-types)
 
 ---
 
@@ -587,6 +587,7 @@ How do they differ? It's how they are stored in the computer's memory.
 If we recall from the previous chapters, the computer's memory is divided into two parts: the stack and the heap. The call stack is where the function calls are stored, and the heap is where the objects are stored. On the other hand, the primitive data types are stored in the stack, that means the primitive types are stored in the execution context in which they are declared. Let's find out how they differ.
 
 Primitive values example:
+
 ```javascript
 let age = 21;
 let oldAge = age;
@@ -602,6 +603,7 @@ In technical details: Javascript will first create a so-called unique identifier
 ![Call Stack of age & oldAge](https://i.imgur.com/awy3ElR.png)
 
 Reference values example:
+
 ```javascript
 const me = {
   name: 'ItsYeWolfie',
@@ -616,7 +618,7 @@ console.log('Me:', me); // Me: { name: 'ItsYeWolfie', age: 27 }
 
 When we create an object, it is stored in the heap, and the variable `me` points to that object. When we create another variable `friend` and assign it the value of `me`, the value of `me` is not copied, but the identifier points to the same memory address. When we change the value of `friend.age`, the value of `me.age` also changes, because they point to the same memory address.
 
-In technical details: JavaScript will create an unique identifier with the variable name `me`, which will point to a memory address, for e.x `0x003`, and then the object's reference will be stored in that memory address. In other words, the piece of memory in the call stack has a refernece to the piece of memory in the heap, which holds the `me` object. Next, we create a new variable `friend`, which will point to the same memory address as `me`, which is `0x003`, with that, we have the understanding that the `friend` object is the exact same object as the `me` object. When we change the value of `friend.age`, the value of `me.age` also changes, because we are changing the value of the object that is stored in the heap, we are not changing the value of the memory address's vaue in the stack.
+In technical details: JavaScript will create an unique identifier with the variable name `me`, which will point to a memory address, for e.x `0x003`, and then the object's reference will be stored in that memory address. In other words, the piece of memory in the call stack has a refernece to the piece of memory in the heap, which holds the `me` object. Next, we create a new variable `friend`, which will point to the same memory address as `me`, which is `0x003`, with that, we have the understanding that the `friend` object is the same as the `me` object. When we change the value of `friend.age`, the value of `me.age` also changes, because we are changing the value of the object that is stored in the heap, we are not changing the value of the memory address's vaue in the stack.
 
 How will this look in the whole picture?
 
@@ -649,6 +651,7 @@ To summarize:
 
 For further understanding, let's see some examples.
 
+### Examples of Data Types
 
 ```javascript
 let lastName = 'Wolfie';
@@ -658,10 +661,6 @@ console.log(lastName, oldLastName); // Wolf Wolfie
 ```
 
 In the code above, we can see that the `oldLastName` variable is a copy (a new variable) of the `lastName` variable, and when we change the `lastName` variable, the `oldLastName` variable is not affected.
-
-### Objects
-
-
 
 ```javascript
 const jane = {
