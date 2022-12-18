@@ -32,6 +32,10 @@
     - [Regular function call](#regular-function-call)
     - [Arrow function call](#arrow-function-call)
     - [Event listener](#event-listener)
+  - [Primitives vs. Objects (Primitive vs. Reference Types)](#primitives-vs-objects-primitive-vs-reference-types)
+    - [Primitives Summary](#primitives-summary)
+    - [Objects Summary](#objects-summary)
+    - [Objects](#objects)
 
 ---
 
@@ -553,7 +557,179 @@ There are other ways to fix this, but the most common ways are:
 - Using the `apply()` method.
 - Using the `bind()` method.
 
-<!-- TODO: LINK new, call(), apply() and bind() -->
 They will be explained way down below.
 
 See [this](this.js) for practice and further reading & understanding.
+
+## Primitives vs. Objects (Primitive vs. Reference Types)
+
+In JavaScript, there are two types of data types: primitives and objects.
+
+What are the primitive data types?
+
+- Number
+- String
+- Boolean
+- Undefined
+- Null
+- Symbol (ES2015)
+- BigInt (ES2020)
+
+What are the object data types?
+
+- Object literals
+- Arrays
+- Functions
+- Many more...
+
+How do they differ? It's how they are stored in the computer's memory.
+
+If we recall from the previous chapters, the computer's memory is divided into two parts: the stack and the heap. The call stack is where the function calls are stored, and the heap is where the objects are stored. On the other hand, the primitive data types are stored in the stack, that means the primitive types are stored in the execution context in which they are declared. Let's find out how they differ.
+
+Primitive values example:
+```javascript
+let age = 21;
+let oldAge = age;
+age = 22;
+console.log(age); // 22
+console.log(oldAge); // 21
+```
+
+When we create a primitive value, it is stored in the stack, and the variable `age` points to that value. When we create another variable `oldAge` and assign it the value of `age`, the value of `age` is copied and stored in the stack, and the variable `oldAge` points to that value. When we change the value of `age`, the value of `oldAge` remains the same, because it is a copy of the value of `age`, and it is stored in the stack.
+
+In technical details: Javascript will first create a so-called unique identifier with the variable name, then a piece of memory will be allocated with a certain address, for e.x `0x001`, and then the value will be stored in that memory address. The identifier points to that memory address, not the value itself. When we assign a variable to another variable, the value is copied, and the identifier points to the same memory address. It will look as if `oldAge` is a copy of `age`, but it is not. When we reassign the value of `age`, a new memory address will be allocated, and the identifier will point to that new memory address (`0x002`) - which will hold the value of 31. Now, with reference types, it is a bit different.
+
+![Call Stack of age & oldAge](https://i.imgur.com/awy3ElR.png)
+
+Reference values example:
+```javascript
+const me = {
+  name: 'ItsYeWolfie',
+  age: 21,
+};
+
+const friend = me;
+friend.age = 27;
+console.log('Friend:', friend); // Friend: { name: 'ItsYeWolfie', age: 27 }
+console.log('Me:', me); // Me: { name: 'ItsYeWolfie', age: 27 }
+```
+
+When we create an object, it is stored in the heap, and the variable `me` points to that object. When we create another variable `friend` and assign it the value of `me`, the value of `me` is not copied, but the identifier points to the same memory address. When we change the value of `friend.age`, the value of `me.age` also changes, because they point to the same memory address.
+
+In technical details: JavaScript will create an unique identifier with the variable name `me`, which will point to a memory address, for e.x `0x003`, and then the object's reference will be stored in that memory address. In other words, the piece of memory in the call stack has a refernece to the piece of memory in the heap, which holds the `me` object. Next, we create a new variable `friend`, which will point to the same memory address as `me`, which is `0x003`, with that, we have the understanding that the `friend` object is the exact same object as the `me` object. When we change the value of `friend.age`, the value of `me.age` also changes, because we are changing the value of the object that is stored in the heap, we are not changing the value of the memory address's vaue in the stack.
+
+How will this look in the whole picture?
+
+Stack memory:
+| Identifier | Memory Address | Value |
+|------------|----------------|-------|
+| age        | 0x001          | 21    |
+| oldAge     | 0x002          | 21    |
+| me         | 0x003          | D30F  |
+| friend     | 0x003          | D30F  |
+
+Heap memory:
+| Memory Address | Value |
+|----------------|-------|
+| D30F           | { name: 'ItsYeWolfie', age: 21 } |
+
+To summarize:
+
+### Primitives Summary
+
+- Primitives are **immutable**.
+- Primitives are **copied by their value** (they are saved into their place in memory, in the stack).
+- Primitives are **passed by value**.
+
+### Objects Summary
+
+- Objects are **mutable**.
+- Objects are **copied by their reference** (they are saved into their place in memory, in the heap).
+- Objects are **passed by reference**.
+
+For further understanding, let's see some examples.
+
+
+```javascript
+let lastName = 'Wolfie';
+let oldLastName = lastName;
+lastName = 'Wolf';
+console.log(lastName, oldLastName); // Wolf Wolfie
+```
+
+In the code above, we can see that the `oldLastName` variable is a copy (a new variable) of the `lastName` variable, and when we change the `lastName` variable, the `oldLastName` variable is not affected.
+
+### Objects
+
+
+
+```javascript
+const jane = {
+  firstName: 'Jane',
+  lastName: 'Williams',
+  age: 27,
+};
+
+const marriedJane = jane;
+
+marriedJane.lastName = 'Davis';
+
+console.log('Before marriage:', jane); // Before marriage: {firstName: "Jane", lastName: "Davis", age: 27}
+console.log('After marriage:', marriedJane); // After marriage: {firstName: "Jane", lastName: "Davis", age: 27}
+```
+
+In the code above, we can see that the `marriedJane` object is a reference to the `jane` object, and when we change the `lastName` property of the `marriedJane` object, we are also changing the `lastName` property of the `jane` object.
+
+In details: It didn't create a new object in the heap, it just created a new variable that points to the same object in the stack that holds the reference to the object in the heap. In the stack, they both hold the same reference to the object in the heap. Whenever we change the object in the heap, both objects will be affected. This is the reason why we can't change the `marriedJane` object, which is declared as a `const`, and as we know, `const` variables can't be changed. However, what needs to be constant is the value in the stack, and in this case, it is the reference to the object in the heap, which we aren't changing, but the object in the heap itself. It doesn't have to do anything with the `const` keyword, it is just how objects work. What we can't do is to assign a completely different object to the `marriedJane` variable, for example if we do:
+
+```javascript
+marriedJane = {}; // Uncaught TypeError: Assignment to constant variable.
+```
+
+We are trying to assign a completely different object to the `marriedJane` variable, which is declared as a `const`, and as we know, `const` variables can't be changed.
+
+What if we wanted to copy the object, so that we could change one of them without changing the other one? We can do that by using the `Object.assign()` method.
+
+```javascript
+const jane = {
+  firstName: 'Jane',
+  lastName: 'Williams',
+  age: 27,
+};
+
+const marriedJane = Object.assign({}, jane);
+
+marriedJane.lastName = 'Davis';
+
+console.log('Before marriage:', jane); // Before marriage: {firstName: "Jane", lastName: "Williams", age: 27}
+console.log('After marriage:', marriedJane); // After marriage: {firstName: "Jane", lastName: "Davis", age: 27}
+```
+
+In the code above, we can see that the `marriedJane` object is a copy of the `jane` object, and when we change the `lastName` property of the `marriedJane` object, we are not changing the `lastName` property of the `jane` object.
+
+In detail: It created a new object in the heap, and it created a new variable that points to the new object in the stack. In the stack, they both hold a different reference to the object in the heap. Whenever we change the object in the heap, only the object that we changed will be affected. However, there is still a problem, because using this technique of `Object.assign()` will only work for the first level of the object, if we have an object inside the object, then the inner object will still be the same, it will point to the same place in memory, it only creates a shallow copy, not a deep clone of the object.
+To put it into an example:
+
+```javascript
+const jane = {
+  firstName: 'Jane',
+  lastName: 'Williams',
+  age: 27,
+  family: ['Bob', 'Emily', 'John'],
+};
+
+const marriedJane = Object.assign({}, jane);
+
+marriedJane.lastName = 'Davis';
+marriedJane.family.push('Mary');
+
+console.log('Before marriage:', jane); // Before marriage: {firstName: "Jane", lastName: "Williams", age: 27, family: Array(4)}
+console.log('After marriage:', marriedJane); // After marriage: {firstName: "Jane", lastName: "Davis", age: 27, family: Array(4)}
+```
+
+In the code above, we can see that the `marriedJane` object is a copy of the `jane` object, and when we change the `lastName` property of the `marriedJane` object, we are not changing the `lastName` property of the `jane` object. However, when we change the `family` property of the `marriedJane` object, we are also changing the `family` property of the `jane` object, which is a deeply nested object, the `Object.assign()` did not really behind the scenes copy it to the new object. In essence, both the object's `family` property are pointing to the same place in memory, and when we change one of them, we are also changing the other one. A deep clone is what would be needed in this case, and there are many ways to do that, but the most common ways are:
+
+- Using the `JSON.parse()` and `JSON.stringify()` methods.
+- Using the `lodash` library.
+
+They will be explained way down below.
