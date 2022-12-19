@@ -51,8 +51,8 @@
     - [The Spread `...` Operator](#the-spread--operator)
       - [Spread Operator in a Function](#spread-operator-in-a-function)
       - [Spread Operator in Array Literals](#spread-operator-in-array-literals)
-    - [Spread Operator in Object Literals](#spread-operator-in-object-literals)
-      - [Copying Objects with the Spread Operator](#copying-objects-with-the-spread-operator)
+      - [Spread Operator in Object Literals](#spread-operator-in-object-literals)
+        - [Copying Objects with the Spread Operator](#copying-objects-with-the-spread-operator)
 
 ---
 
@@ -1108,7 +1108,7 @@ const arr2 = [...arr, 6, 7, 8, 9, 10];
 console.log(arr2); // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 ```
 
-### Spread Operator in Object Literals
+#### Spread Operator in Object Literals
 
 The spread operator can be used to expand an iterable (such as an object) into individual elements in an object literal. For example:
 
@@ -1133,7 +1133,7 @@ console.log(c);  // { x: 1, y: 3, z: 4 }
 
 In this example, the spread operator `...a` expands the properties of the `a` object into a new object literal, and the spread operator `...b` expands the properties of the `b` object into the same object literal. The resulting object `c` has the properties of both `a` and `b`, with the properties of `b` overwriting any properties with the same name in `a`. Without the spread operator, we would have to use the `Object.assign()` method to combine the two objects (e.g. `c = Object.assign({}, a, b)`).
 
-#### Copying Objects with the Spread Operator
+##### Copying Objects with the Spread Operator
 
 Remember how in previous chapters we were copying objects using the `Object.assign()` method? Well, now we can use the spread operator to copy objects. For example:
 
