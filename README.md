@@ -1,45 +1,53 @@
-# JAVASCRIPT CONCEPTS
+# JavaScript Concepts
 
 ---
 
-- [JAVASCRIPT CONCEPTS](#javascript-concepts)
-  - [WHAT IS JAVASCRIPT?](#what-is-javascript)
-  - [THE JAVASCRIPT ENGINE AND RUNTIME](#the-javascript-engine-and-runtime)
-    - [JS Engine](#js-engine)
-    - [CALL STACK](#call-stack)
-    - [HEAP](#heap)
-    - [COMPILATION VS. INTERPRETATION LANGUAGES](#compilation-vs-interpretation-languages)
-    - [JIT IN JAVASCRIPT](#jit-in-javascript)
-    - [WEB APIs](#web-apis)
-    - [Callback Queue](#callback-queue)
-  - [EXECUTION CONTEXT AND THE CALL STACK](#execution-context-and-the-call-stack)
-    - [What is an execution context?](#what-is-an-execution-context)
-    - [What's inside an execution context?](#whats-inside-an-execution-context)
-    - [Call stack](#call-stack-1)
-  - [SCOPE AND SCOPE CHAIN](#scope-and-scope-chain)
-    - [Scope Concepts](#scope-concepts)
-    - [Global Scope](#global-scope)
-    - [Function Scope](#function-scope)
-    - [Block Scope (ES6)](#block-scope-es6)
-    - [Scope Chain](#scope-chain)
-    - [Scope chain vs. Call stack](#scope-chain-vs-call-stack)
-    - [Summary](#summary)
-  - [Hoisting in JavaScript](#hoisting-in-javascript)
-    - [Temporal Dead Zone, Let and Const](#temporal-dead-zone-let-and-const)
-      - [Hoisting](#hoisting)
-  - [THE THIS KEYWORD](#the-this-keyword)
-    - [Method call](#method-call)
-    - [Regular function call](#regular-function-call)
-    - [Arrow function call](#arrow-function-call)
-    - [Event listener](#event-listener)
-  - [Primitives vs. Objects (Primitive vs. Reference Types)](#primitives-vs-objects-primitive-vs-reference-types)
-    - [Primitives Summary](#primitives-summary)
-    - [Objects Summary](#objects-summary)
-    - [Examples of Data Types](#examples-of-data-types)
+- [JavaScript Concepts](#javascript-concepts)
+  - [Javascript Behind the Scenes](#javascript-behind-the-scenes)
+    - [WHAT IS JAVASCRIPT?](#what-is-javascript)
+    - [THE JAVASCRIPT ENGINE AND RUNTIME](#the-javascript-engine-and-runtime)
+      - [THE JS Engine](#the-js-engine)
+      - [CALL STACK](#call-stack)
+      - [HEAP](#heap)
+      - [COMPILATION VS. INTERPRETATION LANGUAGES](#compilation-vs-interpretation-languages)
+        - [JIT IN JAVASCRIPT](#jit-in-javascript)
+      - [WEB APIs](#web-apis)
+      - [CALLBACK QUEUE](#callback-queue)
+      - [EXECUTION CONTEXT](#execution-context)
+      - [What is an execution context?](#what-is-an-execution-context)
+    - [SCOPE AND SCOPE CHAIN](#scope-and-scope-chain)
+      - [Scope Concepts](#scope-concepts)
+      - [Global Scope](#global-scope)
+      - [Function Scope](#function-scope)
+      - [Block Scope (ES6)](#block-scope-es6)
+      - [Scope Chain](#scope-chain)
+      - [Scope chain vs. Call stack](#scope-chain-vs-call-stack)
+      - [Summary](#summary)
+    - [HOISTING IN JAVASCRIPT](#hoisting-in-javascript)
+      - [Temporal Dead Zone, Let and Const](#temporal-dead-zone-let-and-const)
+        - [Hoisting](#hoisting)
+    - [THE `THIS` KEYWORD](#the-this-keyword)
+      - [Method call](#method-call)
+      - [Regular function call](#regular-function-call)
+      - [Arrow function call](#arrow-function-call)
+      - [Event listener](#event-listener)
+    - [PRIMITIVES vs. OBJECTS (Primitive vs. Reference Types)](#primitives-vs-objects-primitive-vs-reference-types)
+      - [Primitives Summary](#primitives-summary)
+      - [Objects Summary](#objects-summary)
+      - [Examples of Data Types](#examples-of-data-types)
+  - [Data Structures, Modern Operators and Strings](#data-structures-modern-operators-and-strings)
+    - [ARRAY DESTRUCTURING](#array-destructuring)
+      - [Skipping Elements](#skipping-elements)
+      - [SWITCHING VARIABLES](#switching-variables)
+      - [RETURNING MULTIPLE VALUES](#returning-multiple-values)
+      - [NESTED DESTRUCTURING](#nested-destructuring)
+      - [DEFAULT VALUES](#default-values)
 
 ---
 
-## WHAT IS JAVASCRIPT?
+## Javascript Behind the Scenes
+
+### WHAT IS JAVASCRIPT?
 
 **Short answer:** JavaScript is a high-level, object-oriented, multi-paradigm programming language.
 
@@ -58,8 +66,8 @@ Destructuring the long answer:
 
   | Array |
   | --- |
-  | Array.prototype.push |
-  | Array.prototype.indexOf |
+  | `Array.prototype.push` |
+  | `Array.prototype.indexOf` |
 
   ```javascript
     const arr = [1, 2, 3];
@@ -67,7 +75,7 @@ Destructuring the long answer:
     const hasZero = arr.indexOf(0) > -1; // hasZero is false
     ```
 
-    How does this happen? The prototype is the Array prototype object, the array inherits methods from to type as it is built from the prototype itself. Take for example a car, it has a prototype, the prototype is the car itself, and the car inherits methods from the prototype as it is built from the prototype itself.
+    How does this happen? The prototype is the Array prototype object, the array inherits methods from the prototype as it is built from the prototype itself. Take for example a car, it has a prototype, the prototype is the car itself, and the car inherits methods from the prototype as it is built from the prototype itself.
 
 - **First-class functions:** JavaScript supports first-class functions. This means that functions in JavaScript are treated like any other variable. Functions can be passed as arguments to other functions, returned by other functions, and assigned to variables.
 - **Dynamic**: JavaScript is a dynamic language. This means that the data types are not set when the code is written. Instead, the data types are set when the code is executed. This is also called type coercion. For example:
@@ -101,9 +109,9 @@ Destructuring the long answer:
 
 ---
 
-## THE JAVASCRIPT ENGINE AND RUNTIME
+### THE JAVASCRIPT ENGINE AND RUNTIME
 
-### JS Engine
+#### THE JS Engine
 
 A JavaScript engine is a program that executes JavaScript code. It translates the code written in a high-level language into machine code that can be run on a computer.
 
@@ -113,11 +121,31 @@ There are several JavaScript engines in use today, including the V8 engine devel
 
 ![Call Stack & Heap Description](https://i.imgur.com/EEb5hMN.png)
 
-### CALL STACK
+#### CALL STACK
 
-Where our code is executed using execution context. See [execution context](#execution-context-and-the-call-stack) and [call stack](#call-stack-1) for more info.
+LIFO (Last In First Out) data structure, where the last function that gets pushed into the stack is the first one to be popped out of the stack when the execution is finished.
 
-### HEAP
+It is as if you bought pizzas together with your friends, and you put them on a table to keep track of who bought which pizza. The last pizza you bought is the first one you eat, and the first pizza you bought is the last one you eat.
+
+For example in the code above, the call stack will look like this:
+
+```javascript
+global execution context
+x calls first()
+first()
+first() calls second()
+second()
+```
+
+![Call stack](https://i.imgur.com/R51TLgU.png)
+
+So the first function that gets popped out of the stack is second(), then first(), then x, and finally the global execution context.
+What does this mean? It means that the execution of the code happens in the same order as the functions are called. (first `x`, then `first`, then `second`)
+This is called synchronous execution, and it is the default behavior of javascript, it will do one thing at a time, in the order that it is written, and it will wait for the execution of the current function to finish before moving on to the next one (the functions which were called are put into the call stack, and when they are finished, they are popped out of the stack). The only exception to this are asynchronous functions, which will be explained later.
+
+---
+
+#### HEAP
 
 In JavaScript, the heap is a region of memory that is used to store objects and data structures. It is separate from the call stack, which is used to store the current execution state of the program.
 
@@ -127,7 +155,7 @@ The heap is managed by the JavaScript engine, and objects in the heap are subjec
 
 The heap is an important aspect of the way JavaScript works, and is used by many other programming languages as well. It is separate from the stack, which is used to store the current execution state of the program and is managed by the JavaScript engine to ensure that objects and data structures are efficiently used and managed in memory.
 
-### COMPILATION VS. INTERPRETATION LANGUAGES
+#### COMPILATION VS. INTERPRETATION LANGUAGES
 
 **Compilation:** Entire code is converted into machine code at once, and written to a binary file that can be executed by a computer.
 ![Compilation Process](https://i.imgur.com/k4tbNsN.png)
@@ -140,7 +168,7 @@ The compilation process is way faster than the interpretation one.
 Javascript uses **JIT** (Just-in-time) compilation (mix between Compilation & Interpretation)
 ![Just in Time Process](https://i.imgur.com/FHhwpuc.png)
 
-### JIT IN JAVASCRIPT
+##### JIT IN JAVASCRIPT
 
 ![The processes behind JIT in Javascript](https://i.imgur.com/z7CTSTL.png)
 
@@ -148,7 +176,7 @@ The code first is parsed into AST (abstract syntax tree) - it splits up each lin
 
 Then comes compilation, which takes the generated AST and compiles it into machine code, then the machine code gets executed right away. It doesn't stop at that moment, javascript will execute a very unoptimized machine code at first, but during execution, the machine code is optimized and recompiled during the execution.
 
-### WEB APIs
+#### WEB APIs
 
 ![Web APIs](https://i.imgur.com/ynjjDyC.png)
 
@@ -158,7 +186,7 @@ Then comes compilation, which takes the generated AST and compiles it into machi
 
 What are they? They are not part of the JS language, they are part of the browser, and they are not part of the JS engine. (Functionalities provided to the engine, accessible on the window object. (e.x: window.setTimeout))
 
-### Callback Queue
+#### CALLBACK QUEUE
 
 ![Callback Queue](https://i.imgur.com/FVJmbgD.png)
 
@@ -166,27 +194,33 @@ Callback functions, for e.x, when an event is called (e.x an onClick), the callb
 
 ---
 
-## EXECUTION CONTEXT AND THE CALL STACK
+#### EXECUTION CONTEXT
 
-### What is an execution context?
+#### What is an execution context?
 
-After compilation, a so-called global execution context is created for the top-level code (code that is not inside any function), after that is finished, the execution of top-level code inside global EC happens, and only then does the execution of functions happens while waiting for callbacks. (e.x: click event callback)
+In JavaScript, an execution context is an abstract concept that represents the environment in which the JavaScript code is executed. It determines the value of the `this` keyword and the variables that are accessible within a given piece of code.
 
-Exactly one global execution context (EC) happens, that is for top-level code. But, an execution context is created per each function. (for each function call, a new execution context is created)
+There are two types of execution contexts: **global** and **local**.
 
-### What's inside an execution context?
+A global execution context is created when the JavaScript interpreter starts executing your code. It applies to the entire script and is associated with the global object (`window` in the case of a web browser). Any variables or functions declared in the global context are attached to the global object and are therefore accessible from anywhere in the script.
 
-- Variable environment:
-  - let,
-  - const,
-  - var declarations,
-  - functions,
-  - arguments object (not in arrow functions)),
+A local execution context is created whenever a function is called. It is associated with the function and the arguments that are passed to the function. Any variables or functions declared within the function are only accessible within the function's execution context. When the function finishes executing, its local execution context is destroyed and the interpreter returns to the previous execution context.
+
+The execution context also includes a reference to the outer environment, which is the context in which the current context was created. This allows nested functions to access variables and functions declared in their parent contexts.
+
+**What's inside an execution context?**
+
+- Variable environments:
+  - `let`,
+  - `const`,
+  - `var` declarations,
+  - `functions`,
+  - `arguments` object (not in arrow functions)),
 - The scope chain,
 - `this` keyword (not in arrow functions)
   All of this is generated during the "creation phase", right before execution.
 
-Arrow functions don't have the arguments object & this keyword, they can instead use them from their closest regular function parent.
+Arrow functions don't have the `arguments` object & `this` keyword, they can instead use them from their closest regular function parent.
 
 ```javascript
 const name = 'ItsYeWolfie';
@@ -213,37 +247,15 @@ const x = first();
 | **second:** function      |
 | **x:** unknown            |
 
-Arguments are an array of all the arguments passed into the function. (not in arrow functions)
+`arguments` are an array of all the arguments passed into the function. (not in arrow functions)
 
-How will the engine keep track of the order of execution of functions? It will use a data structure called the call stack.
-
-### Call stack
-
-LIFO (Last In First Out) data structure, where the last function that gets pushed into the stack is the first one to be popped out of the stack when the execution is finished.
-
-It is as if you bought pizzas together with your friends, and you put them on a table to keep track of who bought which pizza. The last pizza you bought is the first one you eat, and the first pizza you bought is the last one you eat.
-
-For example in the code above, the call stack will look like this:
-
-```javascript
-global execution context
-x calls first()
-first()
-first() calls second()
-second()
-```
-
-![Call stack](https://i.imgur.com/R51TLgU.png)
-
-So the first function that gets popped out of the stack is second(), then first(), then x, and finally the global execution context.
-What does this mean? It means that the execution of the code happens in the same order as the functions are called. (first `x`, then `first`, then `second`)
-This is called synchronous execution, and it is the default behavior of javascript, it will do one thing at a time, in the order that it is written, and it will wait for the execution of the current function to finish before moving on to the next one (the functions which were called are put into the call stack, and when they are finished, they are popped out of the stack). The only exception to this are asynchronous functions, which will be explained later.
+How will the engine keep track of the order of execution of functions? It will use the Call Stack, read [here](#call-stack) for more info.
 
 ---
 
-## SCOPE AND SCOPE CHAIN
+### SCOPE AND SCOPE CHAIN
 
-### Scope Concepts
+#### Scope Concepts
 
 The scope is the visibility of variables. (where can we access a certain variable?) How our program's variables are organized and accessed. "Where can we access a certain variable?", "Where do we have access to a certain variable?" or "Where was a certain variable defined in the code?"
 
@@ -256,7 +268,7 @@ The scope is the visibility of variables. (where can we access a certain variabl
     - Block scope
 - **Scope of a variable:** Region of your code where you have access to a certain variable.
 
-### Global Scope
+#### Global Scope
 
 ```javascript
 const name = 'ItsYeWolfie';
@@ -268,7 +280,7 @@ const year = 2001;
 - It is the outermost scope in javascript. (outside of any function or block)
 - Variables defined in the global scope are accessible from anywhere in the code.
 
-### Function Scope
+#### Function Scope
 
 ```javascript
 function calcAge(birthYear) {
@@ -282,7 +294,7 @@ console.log(age); // ReferenceError: age is not defined
 - Variables defined inside a function are not accessible from outside the function.
 - Also called a local scope, because the variables are only accessible inside the function.
 
-### Block Scope (ES6)
+#### Block Scope (ES6)
 
 ```javascript
 if (year >= 2001 && year <= 2021) {
@@ -299,7 +311,7 @@ console.log(millenial); // true
 - Variables defined with the `let` and `const` keywords are not accessible from outside the block.
 - Functions defined inside a block are not accessible from outside the block, (they are also block-scoped), at least in strict mode.
 
-### Scope Chain
+#### Scope Chain
 
 ```javascript
 const name = 'ItsYeWolfie';
@@ -351,7 +363,7 @@ The final scope chain will look like this:
 
 Due to lexical scope, the `if-else` cannot access the `job` variable, because it is defined in the `second()` function, which is not a parent of the `if-else` block, they are merely siblings.
 
-### Scope chain vs. Call stack
+#### Scope chain vs. Call stack
 
 ```javascript
 const a = 'ItsYeWolfie';
@@ -404,7 +416,7 @@ The scope chain will look like this:
 
 That shows that the code above will throw a `ReferenceError`, as `b` and `c` are not defined in the `third()` function, and the `third()` function is not a parent of the `first()` function, they are merely siblings.
 
-### Summary
+#### Summary
 
 - Scope determines the accessibility (visibility) of variables. It asks the question "Where can we access a certain variable?", "Where do variables live?".
 - There are 3 types of scope: global scope, function scope and block scope.
@@ -421,7 +433,7 @@ Check [this](scoping.js) for practice.
 
 ---
 
-## Hoisting in JavaScript
+### HOISTING IN JAVASCRIPT
 
 **Hoisting** is a JavaScript mechanism where variables and function declarations are moved to the top of their scope before code execution. Inevitably, this means that no matter where functions and variables are declared, they are moved to the top of their scope regardless of whether their scope is global or local.
 
@@ -434,7 +446,7 @@ Check [this](scoping.js) for practice.
 | let and const variables         | No       | unitialized,TDZ             | Block                  |
 | function expressions and arrows | No       | Depends if var or let/const | Block                  |
 
-### Temporal Dead Zone, Let and Const
+#### Temporal Dead Zone, Let and Const
 
 ```javascript
 const myName = 'ItsYeWolfie';
@@ -453,7 +465,7 @@ The code above will throw a `ReferenceError` because the `job` variable is in th
 - Because it is a safer way to declare variables because it prevents us from using variables before they are declared. It makes it easier to avoid and catch errors. Accessing a variable before it is declared is a common mistake, and it is a common source of bugs and should be avoided.
 - Makes const variables more useful, because they are now immutable, and we can't accidentally change them.
 
-#### Hoisting
+##### Hoisting
 
 **If hoisting brings a lot of problems, why is it still a thing?**
 
@@ -463,7 +475,9 @@ The code above will throw a `ReferenceError` because the `job` variable is in th
 
 Visit [this](hoisting.js) for practice and further reading & understanding.
 
-## THE THIS KEYWORD
+---
+
+### THE `THIS` KEYWORD
 
 `this` keyword is a special variable that is created for every execution context (every function). It is not assigned a value until a function where it is defined is called. It takes the value of (points to) the "owner" of the function in which `this` keyword is used.
 
@@ -473,7 +487,7 @@ If we set for example `x = 5`, and then we call `console.log(this.x)`, `this` ke
 
 Let's analyze four different ways of calling a function, and see how `this` keyword behaves in each case.
 
-### Method call
+#### Method call
 
 ```javascript
 const myObj = {
@@ -490,7 +504,7 @@ myObj.calcAge(); // this = myObj
 
 In the code above, `this` keyword points to the object that is calling the method, in this case, the `myObj` object, and `this.birthYear` is equal to `myObj.birthYear`, which is `2001`.
 
-### Regular function call
+#### Regular function call
 
 ```javascript
 const myObj = {
@@ -508,7 +522,7 @@ calcAge(); // this = undefined
 
 In the code above, `this` keyword is undefined, because the `calcAge()` function is a regular function call and not a method call. (This applies only for strict mode, in non-strict mode, `this` keyword will point to the global object, which is the `window` object in the browser, and the `global` object in Node.js.)
 
-### Arrow function call
+#### Arrow function call
 
 ```javascript
 const myObj = {
@@ -532,7 +546,7 @@ myObj.calcAge(); // this = myObj
 
 In the code above, `this` keyword points to the object that is calling the method, in this case, the `myObj` object, and `this.birthYear` is equal to `myObj.birthYear`, which is `2001`. Arrow functions do not get their own `this` keyword, they simply use `this` keyword of the function they are written in.
 
-### Event listener
+#### Event listener
 
 ```javascript
 const myObj = {
@@ -561,7 +575,9 @@ They will be explained way down below.
 
 See [this](this.js) for practice and further reading & understanding.
 
-## Primitives vs. Objects (Primitive vs. Reference Types)
+---
+
+### PRIMITIVES vs. OBJECTS (Primitive vs. Reference Types)
 
 In JavaScript, there are two types of data types: primitives and objects.
 
@@ -584,7 +600,7 @@ What are the object data types?
 
 How do they differ? It's how they are stored in the computer's memory.
 
-If we recall from the previous chapters, the computer's memory is divided into two parts: the stack and the heap. The call stack is where the function calls are stored, and the heap is where the objects are stored. On the other hand, the primitive data types are stored in the stack, that means the primitive types are stored in the execution context in which they are declared. Let's find out how they differ.
+If we recall from the previous chapters, the computer's memory is divided into two parts: the stack and the heap. The call stack is where the function calls are stored, and the heap is where the objects are stored. On the other hand, the primitive data types are stored in the stack, which means the primitive types are stored in the execution context in which they are declared. Let's find out how they differ.
 
 Primitive values example:
 
@@ -618,7 +634,7 @@ console.log('Me:', me); // Me: { name: 'ItsYeWolfie', age: 27 }
 
 When we create an object, it is stored in the heap, and the variable `me` points to that object. When we create another variable `friend` and assign it the value of `me`, the value of `me` is not copied, but the identifier points to the same memory address. When we change the value of `friend.age`, the value of `me.age` also changes, because they point to the same memory address.
 
-In technical details: JavaScript will create an unique identifier with the variable name `me`, which will point to a memory address, for e.x `0x003`, and then the object's reference will be stored in that memory address. In other words, the piece of memory in the call stack has a refernece to the piece of memory in the heap, which holds the `me` object. Next, we create a new variable `friend`, which will point to the same memory address as `me`, which is `0x003`, with that, we have the understanding that the `friend` object is the same as the `me` object. When we change the value of `friend.age`, the value of `me.age` also changes, because we are changing the value of the object that is stored in the heap, we are not changing the value of the memory address's vaue in the stack.
+In technical details: JavaScript will create a unique identifier with the variable name `me`, which will point to a memory address, for e.x `0x003`, and then the object's reference will be stored in that memory address. In other words, the piece of memory in the call stack has a refernece to the piece of memory in the heap, which holds the `me` object. Next, we create a new variable `friend`, which will point to the same memory address as `me`, which is `0x003`, with that, we have the understanding that the `friend` object is the same as the `me` object. When we change the value of `friend.age`, the value of `me.age` also changes, because we are changing the value of the object that is stored in the heap, we are not changing the value of the memory address's value in the stack.
 
 How will this look in the whole picture?
 
@@ -637,13 +653,13 @@ Heap memory:
 
 To summarize:
 
-### Primitives Summary
+#### Primitives Summary
 
 - Primitives are **immutable**.
 - Primitives are **copied by their value** (they are saved into their place in memory, in the stack).
 - Primitives are **passed by value**.
 
-### Objects Summary
+#### Objects Summary
 
 - Objects are **mutable**.
 - Objects are **copied by their reference** (they are saved into their place in memory, in the heap).
@@ -651,7 +667,7 @@ To summarize:
 
 For further understanding, let's see some examples.
 
-### Examples of Data Types
+#### Examples of Data Types
 
 ```javascript
 let lastName = 'Wolfie';
@@ -679,7 +695,7 @@ console.log('After marriage:', marriedJane); // After marriage: {firstName: "Jan
 
 In the code above, we can see that the `marriedJane` object is a reference to the `jane` object, and when we change the `lastName` property of the `marriedJane` object, we are also changing the `lastName` property of the `jane` object.
 
-In details: It didn't create a new object in the heap, it just created a new variable that points to the same object in the stack that holds the reference to the object in the heap. In the stack, they both hold the same reference to the object in the heap. Whenever we change the object in the heap, both objects will be affected. This is the reason why we can't change the `marriedJane` object, which is declared as a `const`, and as we know, `const` variables can't be changed. However, what needs to be constant is the value in the stack, and in this case, it is the reference to the object in the heap, which we aren't changing, but the object in the heap itself. It doesn't have to do anything with the `const` keyword, it is just how objects work. What we can't do is to assign a completely different object to the `marriedJane` variable, for example if we do:
+In detail: It didn't create a new object in the heap, it just created a new variable that points to the same object in the stack that holds the reference to the object in the heap. In the stack, they both hold the same reference to the object in the heap. Whenever we change the object in the heap, both objects will be affected. This is the reason why we can't change the `marriedJane` object, which is declared as a `const`, and as we know, `const` variables can't be changed. However, what needs to be constant is the value in the stack, and in this case, it is the reference to the object in the heap, which we aren't changing, but the object in the heap itself. It doesn't have to do anything with the `const` keyword, it is just how objects work. What we can't do is assign a completely different object to the `marriedJane` variable, for example, if we do:
 
 ```javascript
 marriedJane = {}; // Uncaught TypeError: Assignment to constant variable.
@@ -687,7 +703,7 @@ marriedJane = {}; // Uncaught TypeError: Assignment to constant variable.
 
 We are trying to assign a completely different object to the `marriedJane` variable, which is declared as a `const`, and as we know, `const` variables can't be changed.
 
-What if we wanted to copy the object, so that we could change one of them without changing the other one? We can do that by using the `Object.assign()` method.
+What if we wanted to copy the object so that we could change one of them without changing the other one? We can do that by using the `Object.assign()` method.
 
 ```javascript
 const jane = {
@@ -726,9 +742,141 @@ console.log('Before marriage:', jane); // Before marriage: {firstName: "Jane", l
 console.log('After marriage:', marriedJane); // After marriage: {firstName: "Jane", lastName: "Davis", age: 27, family: Array(4)}
 ```
 
-In the code above, we can see that the `marriedJane` object is a copy of the `jane` object, and when we change the `lastName` property of the `marriedJane` object, we are not changing the `lastName` property of the `jane` object. However, when we change the `family` property of the `marriedJane` object, we are also changing the `family` property of the `jane` object, which is a deeply nested object, the `Object.assign()` did not really behind the scenes copy it to the new object. In essence, both the object's `family` property are pointing to the same place in memory, and when we change one of them, we are also changing the other one. A deep clone is what would be needed in this case, and there are many ways to do that, but the most common ways are:
+In the code above, we can see that the `marriedJane` object is a copy of the `jane` object, and when we change the `lastName` property of the `marriedJane` object, we are not changing the `lastName` property of the `jane` object. However, when we change the `family` property of the `marriedJane` object, we are also changing the `family` property of the `jane` object, which is a deeply nested object, the `Object.assign()` did not really behind the scenes copy to the new object. In essence, both the object's `family` property are pointing to the same place in memory, and when we change one of them, we are also changing the other one. A deep clone is what would be needed in this case, and there are many ways to do that, but the most common ways are:
 
 - Using the `JSON.parse()` and `JSON.stringify()` methods.
 - Using the `lodash` library.
 
 They will be explained way down below.
+
+---
+
+## Data Structures, Modern Operators and Strings
+
+### ARRAY DESTRUCTURING
+
+Destructuring Arrays is an ESX feature which is a way of unpacking values from an array or object into distinct variables. In other words, destructuring is a way of breaking a complex data structure into smaller parts (like a variable). It is a very useful feature, and it is used a lot in modern JavaScript. (Starting from ES6)
+
+Let's see how destructuring was done before ES6:
+
+```javascript
+const arr = [2, 3, 4];
+const a = arr[0];
+const b = arr[1];
+const c = arr[2];
+console.log(a, b, c); // 2 3 4
+```
+
+In the code above, we can see that we are creating three variables, `a`, `b`, and `c`, and we are assigning them the values of the first, second, and third elements of the `arr` array, respectively. This is how we used to do it before ES6.
+
+Now, let's see how we can do it with destructuring:
+
+```javascript
+const [a, b, c] = [2, 3, 4];
+console.log(a, b, c); // 2 3 4
+```
+
+Now, we are creating three variables, `a`, `b`, and `c`, and we are assigning them the values of the first, second, and third elements of the array on the right, respectively. This is how we can do it with destructuring in ES6.
+This is a very useful feature, it doesn't mutate the original array, and it is very easy to use. 
+
+#### Skipping Elements
+
+You can skip elements while destructuring an array, by using the comma `,` operator. Let's see an example:
+
+```javascript
+const [a, , c] = [2, 3, 4];
+console.log(a, c); // 2 4
+```
+
+In the code above, we can see that we are creating two variables, `a`, and `c`, and we are assigning them the values of the first, and third elements of the array on the right, respectively. We are skipping the second element of the array, which is the number `3` by using the comma `,` operator. This is how we can skip elements while destructuring an array.
+
+Let's see a full example:
+
+```javascript
+const restaurant = {
+  name: 'Classico Italiano',
+  location: 'Via Angelo Tavanti 23, Firenze, Italy',
+  categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
+  starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
+  mainMenu: ['Pizza', 'Pasta', 'Risotto'],
+
+  order(starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+  },
+};
+```
+
+If we do: `const [first, second] = restaurant.categories;`, then the `first` variable will be equal to the first element of the `restaurant.categories` array, and the `second` variable will be equal to the second element of the `restaurant.categories` array. 
+
+#### SWITCHING VARIABLES
+
+Switching variables is the process of switching the values of two variables. For example, if we have two variables, `main` and `secondary`, and we want to switch their values, then we can do this the traditional way:
+
+```javascript
+let temp = main;
+main = secondary;
+secondary = temp;
+console.log(main, secondary); // Vegetarian Italian
+```
+
+Here, we are creating a temporary variable, `temp`, and we are assigning it the value of the `main` variable, then the `main` variable the value of the `secondary` variable, and then the `secondary` variable the value of the `temp` variable. This is how we used to switch variables before ES6.
+
+However, in ES6, we can do this in a much easier way:
+```javascript
+let [main, , secondary] = restaurant.categories;
+console.log(main, secondary); // Italian Vegetarian
+
+[main, secondary] = [secondary, main];
+console.log(main, secondary); // Vegetarian Italian
+```
+
+What we're doing here is that we are destructuring the `restaurant.categories` array and we are assigning the first element of the array to the `main` variable, the second element to the `secondary` variable. Then, we are destructuring the `restaurant.categories` array again, but this time, we are assigning the second element of the array to the `main` variable, and the first element of the array to the `secondary` variable. This is how we can switch variables in ES6.
+
+#### RETURNING MULTIPLE VALUES
+
+Returning multiple values is the process of returning multiple values from a function. If we take the previous example of the `order()` method, then we can see that it returns an array with two elements, the first element is the starter, and the second element is the main course. We can also return multiple values from a function using destructuring, for example:
+
+```javascript
+const [starter, mainCourse] = restaurant.order(2, 0);
+console.log(starter, mainCourse); // Garlic Bread Pizza
+```
+
+In the code above, we are destructuring the array returned from the `order()` method, and we are assigning the first element of the array to the `starter` variable, and the second element to the `mainCourse` variable. This is how we can return multiple values from a function using destructuring.
+
+#### NESTED DESTRUCTURING
+
+Nested destructuring is the process of destructuring an array or an object which is inside another array or object. For example:
+
+```javascript
+const nested = [2, 4, [5, 6]];
+const [i, , j] = nested;
+console.log(i, j); // 2 [5, 6]
+```
+
+In the code above, we are destructuring the `nested` array, and we are assigning the first element of the array to the `i` variable, and we are assigning the third element of the array to the `j` variable. The third element of the `nested` array is an array, and we can also destruct it, for example:
+
+```javascript
+const nested = [2, 4, [5, 6]];
+const [i, , [j, k]] = nested;
+console.log(i, j, k); // 2 5 6
+```
+
+Now, we are destructuring the `nested` array, and we are assigning the first element of the array to the `i` variable, and we are assigning the third element of the array to the `j` variable. The third element of the `nested` array is an array, and we are destructuring it, and we are assigning the first element of the array to the `j` variable, and we are assigning the second element of the array to the `k` variable. This is how we can do nested destructuring.
+
+#### DEFAULT VALUES
+
+Default values is the process of assigning a default value to a variable if the value of the variable is `undefined`. For example:
+
+```javascript
+const [p, q, r] = [8, 9];
+console.log(p, q, r); // 8 9 undefined
+```
+
+In the code above, we are destructuring the array `[8, 9]`, and we are assigning the first element of the array to the `p` variable, the second element of the array to the `q` variable, and the third element of the array to the `r` variable. However, the third element of the array is `undefined`, and we can assign a default value to the `r` variable, for example:
+
+```javascript
+const [p, q, r = 1] = [8, 9];
+console.log(p, q, r); // 8 9 1
+```
+
+Then, we destructure the array `[8, 9]`, and we are assigning the first element of the array to the `p` variable, the second element of the array to the `q` variable, and the third element of the array to the `r` variable. However, the third element of the array is `undefined`, and we are assigning the `r` variable the value of `1`, which is the default value. This is how we can assign a default value to a variable.
