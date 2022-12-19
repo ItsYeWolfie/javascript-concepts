@@ -25,7 +25,6 @@
       - [Summary](#summary)
     - [HOISTING IN JAVASCRIPT](#hoisting-in-javascript)
       - [Temporal Dead Zone, Let and Const](#temporal-dead-zone-let-and-const)
-        - [Hoisting](#hoisting)
     - [THE `THIS` KEYWORD](#the-this-keyword)
       - [Method call](#method-call)
       - [Regular function call](#regular-function-call)
@@ -36,12 +35,19 @@
       - [Objects Summary](#objects-summary)
       - [Examples of Data Types](#examples-of-data-types)
   - [Data Structures, Modern Operators and Strings](#data-structures-modern-operators-and-strings)
-    - [ARRAY DESTRUCTURING](#array-destructuring)
+    - [DESTRUCTURING ARRAYS](#destructuring-arrays)
       - [Skipping Elements](#skipping-elements)
-      - [SWITCHING VARIABLES](#switching-variables)
-      - [RETURNING MULTIPLE VALUES](#returning-multiple-values)
-      - [NESTED DESTRUCTURING](#nested-destructuring)
-      - [DEFAULT VALUES](#default-values)
+      - [Switching Variables](#switching-variables)
+      - [Returning Multiple Values](#returning-multiple-values)
+      - [Nested Destructuring](#nested-destructuring)
+      - [Default Values](#default-values)
+    - [DESTRUCTURING OBJECTS](#destructuring-objects)
+      - [Assigning New Variable Names](#assigning-new-variable-names)
+      - [Assigning Default Values](#assigning-default-values)
+      - [Mutating Variables](#mutating-variables)
+      - [Object Nested Destructuring](#object-nested-destructuring)
+      - [Object Destructuring in a Function](#object-destructuring-in-a-function)
+      - [Object Method Destructuring](#object-method-destructuring)
 
 ---
 
@@ -178,19 +184,45 @@ Then comes compilation, which takes the generated AST and compiles it into machi
 
 #### WEB APIs
 
+In JavaScript, WEB APIs *(Application Programming Interfaces)* are a set of APIs that allow web pages to interact with the browser and the operating system. They provide a way for web pages to access and manipulate various features of the browser and the operating system, such as the **DOM** *(Document Object Model)*, the network, the filesystem, and more.
+
+Here are some examples of WEB APIs:
+
+- **DOM API:** The DOM API allows web pages to access and manipulate the structure of an HTML or XML document. It provides a way to create, delete, and modify elements, attributes, and text in a document.
+- **Network API:** The network API provides a way for web pages to send and receive data over the network. It includes APIs for making HTTP requests, such as the fetch API and the XMLHttpRequest API.
+- **File API:** The file API provides a way for web pages to access and manipulate the filesystem. It includes APIs for reading and writing files, such as the FileReader API and the FileWriter API.
+- **Geolocation API:** The geolocation API provides a way for web pages to access the geographical location of the device. It includes APIs for getting the current location, tracking the location over time, and converting between geographical coordinates and addresses.
+
+WEB APIs are an important part of the web platform, as they allow web pages to access and manipulate various features of the browser and the operating system. They are usually provided by the browser and are not a part of the core JavaScript language.
+
 ![Web APIs](https://i.imgur.com/ynjjDyC.png)
-
-- DOM,
-- Timers,
-- Fetch API, ...
-
-What are they? They are not part of the JS language, they are part of the browser, and they are not part of the JS engine. (Functionalities provided to the engine, accessible on the window object. (e.x: window.setTimeout))
 
 #### CALLBACK QUEUE
 
-![Callback Queue](https://i.imgur.com/FVJmbgD.png)
+In JavaScript, the callback queue is a queue of functions that are waiting to be executed. These functions are called callbacks.
 
-Callback functions, for e.x, when an event is called (e.x an onClick), the callback function is put into the callback queue. Then, when the stack is empty, the callback function is passed to the stack so that it can be executed. And this happens due to the event loop, it takes callback functions from the callback queue and puts them into the call stack so they can be executed.
+Callbacks are often used in JavaScript to perform certain tasks after an asynchronous operation has been completed. Asynchronous operations are operations that occur in the background and do not block the main execution thread.
+
+Here is an example of using a callback to log a message after an asynchronous operation has been completed:
+  
+```javascript
+function asyncOperation(callback) {
+  setTimeout(() => {
+    console.log("Async operation completed");
+    callback();
+  }, 1000);
+}
+
+asyncOperation(() => {
+  console.log("Callback function called");
+});
+```
+
+In this example, the `asyncOperation` function performs an asynchronous operation that takes 1 second to complete. After the operation has been completed, the `callback` function is called. The `callback` function logs a message to the console.
+
+Callbacks are often used in conjunction with event loops. An event loop is a continuous loop that monitors the callback queue and executes the functions in the queue when they are ready to be executed.
+
+![Callback Queue](https://i.imgur.com/FVJmbgD.png)
 
 ---
 
@@ -348,7 +380,7 @@ At first sight, the scopes might look like this:
 
 The secret is that every scope has access to the variables of all its parent scopes. This is called the scope chain. That means that the second() function has access to the variables of the first() function, and the first() function has access to the variables of the global scope. How does this work? The second `scope()` will look for the variable it needs in its scope, and if it doesn't find it there, it will look in the scope of its parent, and so on, until it finds the variable it needs, or it reaches the global scope, and if it doesn't find the variable there, it will throw a `ReferenceError`.
 
-This is called the **variable lookup**, and it is how the javascript engine finds the value of a variable, this only works **upwards**, it will **_never look downwards_**, so the `second()` function will never have access to the variables of a `third()` function.
+This is called the **variable lookup**, and it is how the javascript engine finds the value of a variable, this only works **upwards**, it will **never look downwards**, so the `second()` function will never have access to the variables of a `third()` function.
 
 The `millennial` variable is accessible from the `second()` function, because it is defined by the `var` keyword (which is exempt from the block scope), and the `decade` variable is not accessible from the `second()` function, because it is defined by the `const` keyword (which is not exempt from the block scope) - **var** is function scoped, **let** and **const** are block scoped.
 
@@ -465,11 +497,9 @@ The code above will throw a `ReferenceError` because the `job` variable is in th
 - Because it is a safer way to declare variables because it prevents us from using variables before they are declared. It makes it easier to avoid and catch errors. Accessing a variable before it is declared is a common mistake, and it is a common source of bugs and should be avoided.
 - Makes const variables more useful, because they are now immutable, and we can't accidentally change them.
 
-##### Hoisting
-
 **If hoisting brings a lot of problems, why is it still a thing?**
 
-- _It is a feature of JavaScript, and it is not going to be removed._
+- *It is a feature of JavaScript, and it is not going to be removed.*
 - Using functions before the actual declaration.
 - var hoisting is just a side effect of how the JavaScript engine works, and it is not a good practice to use it.
 
@@ -753,9 +783,9 @@ They will be explained way down below.
 
 ## Data Structures, Modern Operators and Strings
 
-### ARRAY DESTRUCTURING
+### DESTRUCTURING ARRAYS
 
-Destructuring Arrays is an ESX feature which is a way of unpacking values from an array or object into distinct variables. In other words, destructuring is a way of breaking a complex data structure into smaller parts (like a variable). It is a very useful feature, and it is used a lot in modern JavaScript. (Starting from ES6)
+Destructuring Arrays is an ESX feature that is a way of unpacking values from an array or object into distinct variables. In other words, destructuring is a way of breaking a complex data structure into smaller parts (like a variable). It is a very useful feature, and it is used a lot in modern JavaScript. (Starting from ES6)
 
 Let's see how destructuring was done before ES6:
 
@@ -769,15 +799,15 @@ console.log(a, b, c); // 2 3 4
 
 In the code above, we can see that we are creating three variables, `a`, `b`, and `c`, and we are assigning them the values of the first, second, and third elements of the `arr` array, respectively. This is how we used to do it before ES6.
 
-Now, let's see how we can do it with destructuring:
+Now, let's see how we can do it via destructuring:
 
 ```javascript
 const [a, b, c] = [2, 3, 4];
 console.log(a, b, c); // 2 3 4
 ```
 
-Now, we are creating three variables, `a`, `b`, and `c`, and we are assigning them the values of the first, second, and third elements of the array on the right, respectively. This is how we can do it with destructuring in ES6.
-This is a very useful feature, it doesn't mutate the original array, and it is very easy to use. 
+Now, we are creating three variables, `a`, `b`, and `c`, and we are assigning them the values of the first, second, and third elements of the array on the right, respectively. This is how we can do it via destructuring in ES6.
+This is a very useful feature, it doesn't mutate the original array, and it is very easy to use.
 
 #### Skipping Elements
 
@@ -804,11 +834,14 @@ const restaurant = {
     return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
   },
 };
+
+const [main, , secondary] = restaurant.categories;
+console.log(main, secondary); // Italian Vegetarian
 ```
 
-If we do: `const [first, second] = restaurant.categories;`, then the `first` variable will be equal to the first element of the `restaurant.categories` array, and the `second` variable will be equal to the second element of the `restaurant.categories` array. 
+In the code above, we are destructuring the `restaurant.categories` array and we are creating two variables, `main`, and `secondary`, and we are assigning them the values of the first, and third elements of the array, respectively. We are skipping the second element of the array, which is the string `'Pizzeria'` by using the comma `,` operator. This is how we can skip elements while destructuring an array.
 
-#### SWITCHING VARIABLES
+#### Switching Variables
 
 Switching variables is the process of switching the values of two variables. For example, if we have two variables, `main` and `secondary`, and we want to switch their values, then we can do this the traditional way:
 
@@ -822,6 +855,7 @@ console.log(main, secondary); // Vegetarian Italian
 Here, we are creating a temporary variable, `temp`, and we are assigning it the value of the `main` variable, then the `main` variable the value of the `secondary` variable, and then the `secondary` variable the value of the `temp` variable. This is how we used to switch variables before ES6.
 
 However, in ES6, we can do this in a much easier way:
+
 ```javascript
 let [main, , secondary] = restaurant.categories;
 console.log(main, secondary); // Italian Vegetarian
@@ -830,9 +864,9 @@ console.log(main, secondary); // Italian Vegetarian
 console.log(main, secondary); // Vegetarian Italian
 ```
 
-What we're doing here is that we are destructuring the `restaurant.categories` array and we are assigning the first element of the array to the `main` variable, the second element to the `secondary` variable. Then, we are destructuring the `restaurant.categories` array again, but this time, we are assigning the second element of the array to the `main` variable, and the first element of the array to the `secondary` variable. This is how we can switch variables in ES6.
+What we're doing here is that we are destructuring the `restaurant.categories` array and we are assigning the first element of the array to the `main` variable, and the second element to the `secondary` variable. Then, we are destructuring the `restaurant.categories` array again, but this time, we are assigning the second element of the array to the `main` variable, and the first element of the array to the `secondary` variable. This is how we can switch variables in ES6.
 
-#### RETURNING MULTIPLE VALUES
+#### Returning Multiple Values
 
 Returning multiple values is the process of returning multiple values from a function. If we take the previous example of the `order()` method, then we can see that it returns an array with two elements, the first element is the starter, and the second element is the main course. We can also return multiple values from a function using destructuring, for example:
 
@@ -843,7 +877,7 @@ console.log(starter, mainCourse); // Garlic Bread Pizza
 
 In the code above, we are destructuring the array returned from the `order()` method, and we are assigning the first element of the array to the `starter` variable, and the second element to the `mainCourse` variable. This is how we can return multiple values from a function using destructuring.
 
-#### NESTED DESTRUCTURING
+#### Nested Destructuring
 
 Nested destructuring is the process of destructuring an array or an object which is inside another array or object. For example:
 
@@ -863,9 +897,9 @@ console.log(i, j, k); // 2 5 6
 
 Now, we are destructuring the `nested` array, and we are assigning the first element of the array to the `i` variable, and we are assigning the third element of the array to the `j` variable. The third element of the `nested` array is an array, and we are destructuring it, and we are assigning the first element of the array to the `j` variable, and we are assigning the second element of the array to the `k` variable. This is how we can do nested destructuring.
 
-#### DEFAULT VALUES
+#### Default Values
 
-Default values is the process of assigning a default value to a variable if the value of the variable is `undefined`. For example:
+Assigning default values during an object destructuring is the process of assigning a default value to a variable if the value of the variable is `undefined`. For example:
 
 ```javascript
 const [p, q, r] = [8, 9];
@@ -880,3 +914,132 @@ console.log(p, q, r); // 8 9 1
 ```
 
 Then, we destructure the array `[8, 9]`, and we are assigning the first element of the array to the `p` variable, the second element of the array to the `q` variable, and the third element of the array to the `r` variable. However, the third element of the array is `undefined`, and we are assigning the `r` variable the value of `1`, which is the default value. This is how we can assign a default value to a variable.
+
+### DESTRUCTURING OBJECTS
+
+In JavaScript, object destructuring is a feature that allows you to extract properties from an object and bind them to variables. It is a concise way to access and work with object properties. Most rules apply to object destructuring as they do to array destructuring, of course, there are some differences and/or additions/exceptions.
+
+Here is an example of object destructuring:
+
+```javascript
+const obj = {a: 1, b: 2, c: 3};
+const {a, b, c} = obj;
+
+console.log(a, b, c); // 1 2 3
+```
+
+We are creating an object, `obj`, and we are assigning it three properties, `a`, `b`, and `c`. Then, we destructure the `obj` object, and we are assigning the `a` property to the `a` variable, the `b` property to the `b` variable, and the `c` property to the `c` variable. This is how object destructuring is done.
+
+Unlike in array destructuring, we don't have to destructure the object in the same order as the properties defined in the object. For example:
+
+```javascript
+const obj = {a: 1, b: 2, c: 3};
+const {b, a, c} = obj;
+
+console.log(a, b, c); // 1 2 3
+```
+
+#### Assigning New Variable Names
+
+Assigning new variable names is the process of assigning a new name to a variable when destructuring an object. It is done by using the colon (`:`) operator. For example:
+
+```javascript
+const obj = {a: 1, b: 2, c: 3};
+const {a: name1, b: name2, c: name3} = obj;
+
+console.log(name1, name2, name3); // 1 2 3
+```
+
+In the code above, we are destructuring the `obj` object, and we are assigning the `a` property to the `name1` variable, the `b` property to the `name2` variable, and the `c` property to the `name3` variable. This is how we can assign new variable names when destructuring an object.
+
+#### Assigning Default Values
+
+Assigning default values is the process of assigning a default value to a variable if the value of the variable is `undefined`. For example:
+
+```javascript
+const obj = {a: 1, b: 2, c: 3};
+const {a: name1, b: name2, c: name3, d: name4 = 4} = obj;
+
+console.log(name1, name2, name3, name4); // 1 2 3 4
+```
+
+The `name4` variable is assigned the value of `4`, which is the default value because the `d` property is not defined in the `obj` object. If the property is defined in the object, then the default value will not be assigned to the variable. This is how we can assign default values to variables when destructuring an object.
+
+#### Mutating Variables
+
+Mutating variables is the process of changing the value of a variable. For example:
+
+```javascript
+let a = 111;
+let b = 999;
+const obj = {a: 23, b: 7, c: 14};
+
+({a, b} = obj);
+
+console.log(a, b); // 23 7
+```
+
+In the code above, we are creating two variables, `a` and `b`, and we are assigning them the values of `111` and `999`, respectively. Then, we are creating an object, `obj`, and we are assigning it three properties, `a`, `b`, and `c`. Then, we destructure the `obj` object, and we are assigning the `a` property to the `a` variable, and the `b` property to the `b` variable. This is how we can mutate variables when destructuring an object.
+
+#### Object Nested Destructuring
+
+Nested destructuring is the process of destructuring an object which is inside another object. For example:
+
+```javascript
+const obj = {
+  a: 1,
+  b: 2,
+  c: {
+    d: 3,
+    e: 4
+  }
+};
+
+const {a, b, c: {d, e}} = obj;
+
+console.log(a, b, d, e); // 1 2 3 4
+```
+
+In the code above, we are creating an object, `obj`, and we are assigning it three properties, `a`, `b`, and `c`. The `c` property is an object, and it has two properties, `d` and `e`. Then, we destructure the `obj` object, and we are assigning the `a` property to the `a` variable, the `b` property to the `b` variable, and the `c` property to the `c` variable. The `c` property is an object, and we are destructuring it, and we are assigning the `d` property to the `d` variable, and the `e` property to the `e` variable. This is called nested destructuring.
+
+#### Object Destructuring in a Function
+
+Destructuring an object in a function is the process of destructuring an object in a function. For example:
+
+```javascript
+const obj = {a: 1, b: 2, c: 3};
+
+function destructuring({a, b, c}) {
+  console.log(a, b, c);
+}
+
+destructuring(obj); // 1 2 3
+```
+
+In the code above, we are creating an object, `obj`, and we are assigning it three properties, `a`, `b`, and `c`. Then, we are creating a function, `destructuring`, and we are destructuring the `obj` object in the function. This is how we can destructure an object in a function.
+
+#### Object Method Destructuring
+
+Method destructuring is the process of destructuring an object which has a method. For example:
+
+```javascript
+const order: {
+  price: 23,
+  quantity: 2,
+  total(price = this.price, quantity = this.quantity) {
+    return price * quantity;
+  }
+};
+
+const {total} = order;
+
+console.log(total()); // 46
+
+console.log(total(10, 5)); // 50
+```
+
+In the code above, we are creating an object, `order`, and we are assigning it three properties, `price`, `quantity`, and `total`. The `total` property is a method, and it has two parameters, `price` and `quantity`. Then, we destructure the `order` object, and we are assigning the `total` method to the `total` variable. This is how we can manipulate the `total` method by destructuring the `order` object. All other destructuring rules apply to the method destructuring as well, in this case, we can assign default values to the parameters of the `total` method.
+
+**Note:** All of the rules can be combined.
+
+See [this](./objects-destructuring.js) file for a full example.
