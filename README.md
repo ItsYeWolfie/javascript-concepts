@@ -48,6 +48,11 @@
       - [Object Nested Destructuring](#object-nested-destructuring)
       - [Object Destructuring in a Function](#object-destructuring-in-a-function)
       - [Object Method Destructuring](#object-method-destructuring)
+    - [The Spread `...` Operator](#the-spread--operator)
+      - [Spread Operator in a Function](#spread-operator-in-a-function)
+      - [Spread Operator in Array Literals](#spread-operator-in-array-literals)
+    - [Spread Operator in Object Literals](#spread-operator-in-object-literals)
+      - [Copying Objects with the Spread Operator](#copying-objects-with-the-spread-operator)
 
 ---
 
@@ -913,7 +918,9 @@ const [p, q, r = 1] = [8, 9];
 console.log(p, q, r); // 8 9 1
 ```
 
-Then, we destructure the array `[8, 9]`, and we are assigning the first element of the array to the `p` variable, the second element of the array to the `q` variable, and the third element of the array to the `r` variable. However, the third element of the array is `undefined`, and we are assigning the `r` variable the value of `1`, which is the default value. This is how we can assign a default value to a variable.
+Then, we destructure the array `[8, 9]`, and we are assigning the first element of the array to the `p` variable, the second element of the array to the `q` variable, and the third element of the array to the `r` variable. However, the third element of the array is `undefined`, and we are assigning the `r` variable the value of `1`, which is the default value. This is how we can assign a default value to a variable
+
+---
 
 ### DESTRUCTURING OBJECTS
 
@@ -1043,3 +1050,103 @@ In the code above, we are creating an object, `order`, and we are assigning it t
 **Note:** All of the rules can be combined.
 
 See [this](./objects-destructuring.js) file for a full example.
+
+---
+
+### The Spread `...` Operator
+
+The spread operator (also known as the "spread syntax") is a syntax introduced in ECMAScript 6 that allows an iterable (such as an array or string) to be expanded in places where zero or more arguments (for function calls) or elements (for array literals) are expected or an object expression to be expanded in places where zero or more key-value pairs (for object literals) are expected.
+
+**Note:** The spread operator won't work in template literals.
+
+Before the spread operator, we had to pass each element individually, for example:
+  
+```javascript
+const arr = [1, 2, 3, 4, 5];
+const badNewArr = [0, arr[0], arr[1], arr[2], arr[3], arr[4], 6];
+
+console.log(badNewArr); // [0, 1, 2, 3, 4, 5, 6]
+```
+
+But, since the spread operator was introduced, we can pass the whole array, and the spread operator will expand the array, and it will pass each element individually, for example:
+
+```javascript
+const arr = [1, 2, 3, 4, 5];
+const newArr = [0, ...arr, 6];
+
+console.log(newArr); // [0, 1, 2, 3, 4, 5, 6]
+```
+
+In the code above, we are creating an array, `arr`, and we are assigning it five elements, `1`, `2`, `3`, `4`, and `5`. Then, we are creating a new array, `newArr`, and we are assigning it seven elements, `0`, `...arr`, and `6`. The `...arr` will expand the `arr` array, and it will pass each element individually.
+
+The spread operator can be used in many places, such as the following:
+
+#### Spread Operator in a Function
+
+Using the spread operator in a function is the process of using the spread operator in a function. It will expend an iterable (such as an array or string) in places where zero or more arguments (for function calls) or elements (for array literals) are expected. For example:
+
+```javascript
+const arr = [1, 2, 3, 4, 5];
+
+function sum(a, b, c, d, e) {
+  return a + b + c + d + e;
+}
+
+console.log(sum(...arr)); // 15
+```
+
+In the code above, we are creating an array, `arr`, and we are assigning it five elements, `1`, `2`, `3`, `4`, and `5`. Then, we are creating a function, `sum`, and we are passing the elements of the `arr` array as arguments to the function. This is how we can use the spread operator in a function. Traditionally, we would have to pass the arguments one by one to the function, i.e. `sum(arr[0], arr[1], arr[2], arr[3], arr[4])`.
+
+#### Spread Operator in Array Literals
+
+The spread operator can be used to expand an iterable (such as an array) into individual elements in an array literal. For example:
+  
+  ```javascript
+const arr = [1, 2, 3, 4, 5];
+const arr2 = [...arr, 6, 7, 8, 9, 10];
+
+console.log(arr2); // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+```
+
+### Spread Operator in Object Literals
+
+The spread operator can be used to expand an iterable (such as an object) into individual elements in an object literal. For example:
+
+```javascript
+const obj = {a: 1, b: 2, c: 3};
+const obj2 = {...obj, d: 4, e: 5, f: 6};
+
+console.log(obj2); // {a: 1, b: 2, c: 3, d: 4, e: 5, f: 6}
+```
+
+In the code above, we are creating an object, `obj`, and we are assigning it three properties, `a`, `b`, and `c`. Then, we are creating a new object, `obj2`, and we are assigning it six properties, `...obj`, `d`, `e`, and `f`. The `...obj` spread operator will expand the `obj` object, and it will pass each property individually.
+
+Or, you can merge the two, for example:
+
+```javascript
+const a = { x: 1, y: 2 };
+const b = { y: 3, z: 4 };
+const c = { ...a, ...b };
+
+console.log(c);  // { x: 1, y: 3, z: 4 }
+```
+
+In this example, the spread operator `...a` expands the properties of the `a` object into a new object literal, and the spread operator `...b` expands the properties of the `b` object into the same object literal. The resulting object `c` has the properties of both `a` and `b`, with the properties of `b` overwriting any properties with the same name in `a`. Without the spread operator, we would have to use the `Object.assign()` method to combine the two objects (e.g. `c = Object.assign({}, a, b)`).
+
+#### Copying Objects with the Spread Operator
+
+Remember how in previous chapters we were copying objects using the `Object.assign()` method? Well, now we can use the spread operator to copy objects. For example:
+
+```javascript
+const obj = {a: 1, b: 2, c: 3};
+const obj2 = {...obj};
+
+obj2.a = 4;
+
+console.log(obj); // {a: 1, b: 2, c: 3}
+console.log(obj2); // {a: 4, b: 2, c: 3}
+```
+
+That means that whenever we want to copy an object, we can use the spread operator instead of the `Object.assign()` method. The spread operator is much easier to use, and it is more readable while making sure not to mutate the original object.
+
+For some practical examples of the spread operator, see [this](./spread-operator.js) file.
